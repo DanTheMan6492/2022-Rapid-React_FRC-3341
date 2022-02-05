@@ -4,24 +4,25 @@
 
 package frc.robot.commands;
 
-import frc.robot.subsystems.ExampleSubsystem;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
+import frc.robot.subsystems.DriveTrain;
 
-/** An example command that uses an example subsystem. */
-public class ExampleCommand extends CommandBase {
-  @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final ExampleSubsystem m_subsystem;
-  private double tv = 0;
+public class TankDrive extends CommandBase {
 
-  /**
-   * Creates a new ExampleCommand.
-   *
-   * @param subsystem The subsystem used by this command.
-   */
-  public ExampleCommand(ExampleSubsystem subsystem) {
-    m_subsystem = subsystem;
+  private final DriveTrain _driveTrain;
+  private final Joystick _leftJoystick;
+  private final Joystick _rightJoystick;
+  
+  /** Creates a new TankDrive. */
+  public TankDrive(DriveTrain dt, Joystick lj, Joystick rj) {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(subsystem);
+    _driveTrain = dt;
+    _leftJoystick = lj;
+    _rightJoystick = rj;
+
+    addRequirements(_driveTrain);
   }
 
   // Called when the command is initially scheduled.
@@ -31,7 +32,8 @@ public class ExampleCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    
+    _driveTrain.tankDrive(-0.8 * _leftJoystick.getRawAxis(Constants.JoystickAxis.YAxis),
+                          -0.8 * _rightJoystick.getRawAxis(Constants.JoystickAxis.YAxis));
   }
 
   // Called once the command ends or is interrupted.
@@ -41,6 +43,6 @@ public class ExampleCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return tv != 0;
+    return false;
   }
 }
